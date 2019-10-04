@@ -3,8 +3,8 @@ import re
 
 import requests
 
-import settings
-from mysqlconn import Bee
+from DnfDeals import settings
+from DnfDeals.mysqlconn import Bee
 
 bee = Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
 
