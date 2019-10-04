@@ -18,7 +18,7 @@ class Bee(object):
                                      db=self.db,
                                      charset=self.charset,
                                      cursorclass=pymysql.cursors.DictCursor,
-                                     port=self.port)
+                                     port=int(self.port))
         return connection
 
     def insert(self, sql, paras):

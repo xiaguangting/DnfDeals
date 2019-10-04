@@ -1,5 +1,0 @@
-HOST = '39.105.194.66'
-PORT = '3306'
-USER = 'root'
-PASSWORD = '123456'
-DB = 'dnfdeals'

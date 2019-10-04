@@ -13,8 +13,7 @@ def is_exist(itemnmae):
 
 
 def attack():
-    url = 'https://bang.qq.com/app/dnf/acution/index?serverId=24'
-    resp = requests.get(url)
+    resp = requests.get(settings.DEALS_URL)
     tree = etree.HTML(resp.content)
     uls = tree.xpath('//div[@id="hotlist"]/div/ul')[1:]
     for i in uls:

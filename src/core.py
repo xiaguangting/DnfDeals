@@ -18,7 +18,7 @@ def attact(is_yesterday=True):
     sql = 'SELECT id, name, itemid FROM materials'
     result = bee.read(sql, [])
     for i in result:
-        url = 'https://bang.qq.com/app/dnf/acution/actiondetail?itemid=%s&serverId=%s' % (i.get('itemid'), 24)
+        url = settings.MATERIALS_URL.format(i.get('itemid'), 24)
         resp = requests.get(url)
         pattern = 'var pricelist = (\[.*\]);'
         result = re.findall(pattern, resp.text)
