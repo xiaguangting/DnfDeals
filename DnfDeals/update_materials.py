@@ -1,5 +1,6 @@
 import requests
 from lxml import etree
+from tqdm import tqdm
 
 from DnfDeals import settings
 from DnfDeals.mysqlconn import Bee
@@ -16,7 +17,7 @@ def attack():
     resp = requests.get(settings.DEALS_URL)
     tree = etree.HTML(resp.content)
     uls = tree.xpath('//div[@id="hotlist"]/div/ul')[1:]
-    for i in uls:
+    for i in tqdm(uls):
         itemname = i.xpath('./li[3]/text()')[0]
         if not is_exist(itemname):
             picture = i.xpath('./li[2]/img/@data-lazysrc')[0]

@@ -2,6 +2,7 @@ import json
 import re
 
 import requests
+from tqdm import tqdm
 
 from DnfDeals import settings
 from DnfDeals.mysqlconn import Bee
@@ -17,27 +18,48 @@ def is_exist(materials_id, local_time):
 def attact(is_yesterday=True):
     sql = 'SELECT id, name, itemid FROM materials'
     result = bee.read(sql, [])
-    for i in result:
-        url = settings.MATERIALS_URL.format(i.get('itemid'), 9)
-        resp = requests.get(url)
-        pattern = 'var pricelist = (\[.*\]);'
-        result = re.findall(pattern, resp.text)
-        data = json.loads(result[0])
-        if is_yesterday:
-            data = data[-1:]
-        for j in data:
-            materials_id = i.get('id')
-            local_time = j.get('time')
-            if not is_exist(materials_id, local_time):
-                insert_data = {
-                    'materials_id': materials_id,
-                    'itemamt': j.get('itemamt'),
-                    'price': str(j.get('price')).split('.')[0],
-                    'maxprice': str(j.get('maxprice')).split('.')[0],
-                    'minprice': str(j.get('minprice')).split('.')[0],
-                    'local_time': local_time
-                }
-                bee.insert_smart('statistics', insert_data)
+    is_finish = False
+    for i in tqdm(result):
+        materials_id = i.get('id')
+        itemamt, price, maxprice, minprice, local_time = 0, 0, 0, 0, None
+        area_list = settings.HUBEI + settings.HUNAN
+        for j in area_list:
+            url = settings.MATERIALS_URL.format(i.get('itemid'), j)
+            resp = requests.get(url)
+            pattern = 'var pricelist = (\[.*\]);'
+            result = re.findall(pattern, resp.text)
+            data = json.loads(result[0])
+
+            yesterday_data = data[-1]
+            local_time = yesterday_data.get('time')
+            if is_exist(materials_id, local_time):
+                is_finish = True
+                break
+
+            itemamt += int(yesterday_data['itemamt'])
+            price += int(str(yesterday_data['price']).split('.')[0])
+            maxprice_tmp = int(str(yesterday_data['maxprice']).split('.')[0])
+            if maxprice < maxprice_tmp:
+                maxprice = maxprice_tmp
+            minprice_tmp = int(str(yesterday_data['minprice']).split('.')[0])
+            if minprice > minprice_tmp or minprice == 0:
+                minprice = minprice_tmp
+
+        if is_finish:
+            is_finish = False
+            continue
+
+        price = price // len(area_list)
+        # print(i['name'], itemamt, price, maxprice, minprice, local_time)
+        insert_data = {
+            'materials_id': materials_id,
+            'itemamt': itemamt,
+            'price': price,
+            'maxprice': maxprice,
+            'minprice': minprice,
+            'local_time': local_time
+        }
+        bee.insert_smart('statistics', insert_data)
 
 
 if __name__ == '__main__':

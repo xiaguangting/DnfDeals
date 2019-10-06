@@ -12,3 +12,9 @@ MATERIALS_URL = 'https://bang.qq.com/app/dnf/acution/actiondetail?itemid={0}&ser
 # Other
 HUBEI = [9, 24, 48, 68, 76, 94, 115, 127]
 HUNAN = [5, 25, 50, 66, 74, 85, 117]
+
+# Email
+QQ_EMAIL_SMTP_SERVER = 'smtp.qq.com'
+EMAIL_USERNAME = '397902881@qq.com'
+EMAIL_PASSWORD = 'ijotkffhwctscacg'
+ACCEPT_EMAIL_list = ['18627924383@163.com']
