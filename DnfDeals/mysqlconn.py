@@ -49,6 +49,7 @@ class Bee(object):
             with connection.cursor() as cursor:
                 cursor.execute(sql, paras)
                 result = cursor.fetchall()
+            connection.commit()
         finally:
             connection.close()
             return result

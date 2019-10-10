@@ -6,18 +6,25 @@ from matplotlib import pyplot as plt
 bee = Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
 
 
-def action(materials_id):
-    sql = 'SELECT price, itemamt, local_time FROM statistics WHERE materials_id = %s ORDER BY local_time' % materials_id
-    result = bee.read(sql, [])
+def action(name):
+    sql = 'SELECT price, itemamt, local_time FROM statistics WHERE materials_id in (SELECT id FROM materials WHERE ' \
+          'name = %s) ORDER BY local_time'
+    result = bee.read(sql, [name])
     x, y1, y2 = [], [], []
     for i in result:
         x.append(i['local_time'])
         if i['price'] == 0:
-            y1.append(y1[-1])
+            if len(y1) > 0:
+                y1.append(y1[-1])
+            else:
+                y1.append(0)
         else:
             y1.append(i['price'])
         if i['itemamt'] == 0:
-            y2.append(y2[-1])
+            if len(y2) > 0:
+                y2.append(y2[-1])
+            else:
+                y2.append(0)
         else:
             y2.append(i['itemamt'])
 
@@ -39,5 +46,5 @@ def action(materials_id):
 
 
 if __name__ == '__main__':
-    materials_id = 1
-    action(materials_id)
+    name = '深渊派对挑战书'
+    action(name)

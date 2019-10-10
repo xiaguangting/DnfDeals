@@ -49,14 +49,14 @@ def get_content():
 
 def email_send(content=''):
     message = MIMEText(content, 'html', 'utf-8')
-    message['From'] = Header("Robot", 'utf-8')
-    message['To'] = Header("Player", 'utf-8')
-    message['Subject'] = Header('Dnf拍卖行材料价格分析', 'utf-8')
+    message['From'] = "DnfDeals<%s>" % settings.EMAIL_ADDRESS
+    message['To'] = ','.join(settings.ACCEPT_EMAIL_list)
+    message['Subject'] = Header('Dnf拍卖行材料价格分析表', 'utf-8')
 
     smtpObj = smtplib.SMTP()
-    smtpObj.connect(settings.QQ_EMAIL_SMTP_SERVER, 25)
+    smtpObj.connect(settings.EMAIL_SMTP_SERVER)
     smtpObj.login(settings.EMAIL_USERNAME, settings.EMAIL_PASSWORD)
-    smtpObj.sendmail(settings.EMAIL_USERNAME, settings.ACCEPT_EMAIL_list, message.as_string())
+    smtpObj.sendmail(settings.EMAIL_ADDRESS, settings.ACCEPT_EMAIL_list, message.as_string('utf-8'))
 
 
 def attack():
