@@ -51,7 +51,7 @@ def attact(is_yesterday=True):
                 continue
 
             price = round(price / len(area_list))
-            print(i['name'], itemamt, price, maxprice, minprice, local_time)
+            # print(i['name'], itemamt, price, maxprice, minprice, local_time)
             insert_data = {
                 'materials_id': materials_id,
                 'itemamt': itemamt,
