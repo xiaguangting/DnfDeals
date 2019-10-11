@@ -17,3 +17,4 @@ log/*
 .xml
 settings_pro.py
 run_pro.py
+dnfdeals.sh
