@@ -47,5 +47,5 @@ def action(name):
 
 
 if __name__ == '__main__':
-    name = '浓缩的异界精髓'
+    name = '无色小晶块'
     action(name)

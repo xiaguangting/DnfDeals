@@ -19,7 +19,7 @@ def attact(is_yesterday=True):
     result = bee.read(sql, [])
     is_finish = False
     print('Run statistics update')
-    for i in tqdm(result[40:]):
+    for i in tqdm(result):
         try:
             materials_id = i.get('id')
             itemamt, price, maxprice, minprice, local_time = 0, 0, 0, 0, None
