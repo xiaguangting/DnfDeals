@@ -20,10 +20,11 @@ def send_email(subject, content):
     smtpObj.quit()
 
 
-hunter = logging.Logger(name='hunter')
+def get_hunter():
+    hunter = logging.Logger(name='hunter')
 
-handler = TimedRotatingFileHandler(filename=settings.LOG_ADDRESS, when='D', backupCount=30)
-hunter.addHandler(handler)
+    handler = TimedRotatingFileHandler(filename=settings.LOG_ADDRESS, when='D', backupCount=30)
+    hunter.addHandler(handler)
 
 
 class Bee(object):
