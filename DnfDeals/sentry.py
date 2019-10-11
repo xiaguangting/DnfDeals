@@ -53,10 +53,12 @@ def email_send(content=''):
     message['To'] = ','.join(settings.ACCEPT_EMAIL_list)
     message['Subject'] = Header('Dnf拍卖行材料价格分析表', 'utf-8')
 
-    smtpObj = smtplib.SMTP()
-    smtpObj.connect(settings.EMAIL_SMTP_SERVER)
+    # smtpObj = smtplib.SMTP()
+    # smtpObj.connect(settings.EMAIL_SMTP_SERVER)
+    smtpObj = smtplib.SMTP_SSL(settings.EMAIL_SMTP_SERVER, 465)
     smtpObj.login(settings.EMAIL_USERNAME, settings.EMAIL_PASSWORD)
     smtpObj.sendmail(settings.EMAIL_ADDRESS, settings.ACCEPT_EMAIL_list, message.as_string('utf-8'))
+    smtpObj.quit()
 
 
 def attack():
