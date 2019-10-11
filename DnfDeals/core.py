@@ -4,10 +4,9 @@ import re
 import requests
 from tqdm import tqdm
 
-from DnfDeals import settings
-from DnfDeals.mysqlconn import Bee
+from DnfDeals import settings, utils
 
-bee = Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
+bee = utils.Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
 
 
 def is_exist(materials_id, local_time):

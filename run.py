@@ -1,9 +1,13 @@
-from DnfDeals import core, update_materials, sentry
+from DnfDeals import core, update_materials, sentry, utils
 
 if __name__ == '__main__':
-    print('开始更新材料数据')
-    update_materials.attack()
-    print('\n开始更新昨天价格数据')
-    core.attact()
-    print('\n开始分析数据并发送邮件')
-    sentry.attack()
+    execute_list = [update_materials.attack, core.attact, sentry.attack]
+    for i in execute_list:
+        try:
+            i()
+        except Exception as e:
+            import traceback, sys
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            error = str(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            utils.send_email('程序发生了异常', error)
+            continue

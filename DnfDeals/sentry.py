@@ -1,14 +1,10 @@
 # 负责对每天数据分析，并将结果以邮件形式发出
-import smtplib
-from email.header import Header
-from email.mime.text import MIMEText
-
 from tqdm import tqdm
 
-from DnfDeals import settings
-from DnfDeals.mysqlconn import Bee
+from DnfDeals import settings, utils
 
-bee = Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
+
+bee = utils.Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
 
 
 def get_content():
@@ -47,23 +43,9 @@ def get_content():
     return email_content
 
 
-def email_send(content=''):
-    message = MIMEText(content, 'html', 'utf-8')
-    message['From'] = "DnfDeals<%s>" % settings.EMAIL_ADDRESS
-    message['To'] = ','.join(settings.ACCEPT_EMAIL_list)
-    message['Subject'] = Header('Dnf拍卖行材料价格分析表', 'utf-8')
-
-    # smtpObj = smtplib.SMTP()
-    # smtpObj.connect(settings.EMAIL_SMTP_SERVER)
-    smtpObj = smtplib.SMTP_SSL(settings.EMAIL_SMTP_SERVER, 465)
-    smtpObj.login(settings.EMAIL_USERNAME, settings.EMAIL_PASSWORD)
-    smtpObj.sendmail(settings.EMAIL_ADDRESS, settings.ACCEPT_EMAIL_list, message.as_string('utf-8'))
-    smtpObj.quit()
-
-
 def attack():
     email_content = get_content()
-    email_send(email_content)
+    utils.send_email('Dnf拍卖行材料价格分析表', email_content)
 
 
 if __name__ == '__main__':

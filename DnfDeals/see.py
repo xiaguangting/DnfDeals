@@ -1,9 +1,8 @@
-from DnfDeals import settings
-from DnfDeals.mysqlconn import Bee
+from DnfDeals import settings, utils
 
 from matplotlib import pyplot as plt
 
-bee = Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
+bee = utils.Bee(host=settings.HOST, port=settings.PORT, user=settings.USER, password=settings.PASSWORD, db=settings.DB)
 
 
 def action(name):

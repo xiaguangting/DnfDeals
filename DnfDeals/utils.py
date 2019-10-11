@@ -1,4 +1,29 @@
-import pymysql.cursors
+import logging
+import smtplib
+from email.mime.text import MIMEText
+from logging.handlers import TimedRotatingFileHandler
+
+import pymysql
+
+from DnfDeals import settings
+
+
+def send_email(subject, content):
+    message = MIMEText(content, 'html', 'utf-8')
+    message['From'] = "DnfDeals<%s>" % settings.EMAIL_ADDRESS
+    message['To'] = ','.join(settings.ACCEPT_EMAIL_list)
+    message['Subject'] = subject
+
+    smtpObj = smtplib.SMTP_SSL(settings.EMAIL_SMTP_SERVER, 465)
+    smtpObj.login(settings.EMAIL_USERNAME, settings.EMAIL_PASSWORD)
+    smtpObj.sendmail(settings.EMAIL_ADDRESS, settings.ACCEPT_EMAIL_list, message.as_string('utf-8'))
+    smtpObj.quit()
+
+
+hunter = logging.Logger(name='hunter')
+
+handler = TimedRotatingFileHandler(filename=settings.LOG_ADDRESS, when='D', backupCount=30)
+hunter.addHandler(handler)
 
 
 class Bee(object):
