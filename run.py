@@ -1,6 +1,7 @@
 from DnfDeals import core, update_materials, sentry, utils
 
-if __name__ == '__main__':
+
+def execute():
     execute_list = [update_materials.attack, core.attact, sentry.attack]
     for i in execute_list:
         try:
@@ -11,3 +12,7 @@ if __name__ == '__main__':
             error = str(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
             utils.send_email('程序发生了异常', error)
             continue
+
+
+if __name__ == '__main__':
+    execute()
