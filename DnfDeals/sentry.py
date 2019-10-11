@@ -12,6 +12,7 @@ def get_content():
     result = bee.read(sql, [])
     email_content = '<table align="center" border="1" cellspacing="0" style="text-align:center;width: 1000px"><tr><th>材料名称</th><th>交易量涨幅</th><th>价格涨幅</th><th>一天内价格涨幅</th></tr>'
     result_set = []
+    print('Run analyze')
     for i in tqdm(result):
         sql2 = 'SELECT itemamt, price, maxprice, minprice, local_time FROM statistics WHERE materials_id = %s ' \
                'ORDER BY local_time DESC LIMIT 2'

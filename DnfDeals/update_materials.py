@@ -17,6 +17,7 @@ def attack():
     resp = requests.get(settings.DEALS_URL)
     tree = etree.HTML(resp.content)
     uls = tree.xpath('//div[@id="hotlist"]/div/ul')[1:]
+    print('Run materials update')
     for i in tqdm(uls):
         itemname = i.xpath('./li[3]/text()')[0]
         if not is_exist(itemname):

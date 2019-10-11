@@ -18,6 +18,7 @@ def attact(is_yesterday=True):
     sql = 'SELECT id, name, itemid FROM materials'
     result = bee.read(sql, [])
     is_finish = False
+    print('Run statistics update')
     for i in tqdm(result[40:]):
         try:
             materials_id = i.get('id')
