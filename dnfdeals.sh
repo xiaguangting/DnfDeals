@@ -1,1 +1,2 @@
-nohup python run.py >log.txt 2>&1 &
+workon dnfdeals_env
+nohup python run_pro.py 2>&1 &
