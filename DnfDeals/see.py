@@ -28,23 +28,25 @@ def action(name):
         else:
             y2.append(i['itemamt'])
 
-    # plt.figure(figsize=(16, 9))
+    plt.figure()
     ax1 = plt.subplot(2, 1, 1)
     ax2 = plt.subplot(2, 1, 2)
 
     plt.sca(ax1)
     plt.title('Price Chart')
-    plt.plot(x, y1, color='red')
-    plt.xticks(rotation=45)
+    x_label = [i.strftime('%Y-%m-%d') for i in x]
+    plt.xticks(x, x_label, rotation=45)
+    plt.plot(x, y1, 'o-', color='red')
 
     plt.sca(ax2)
     plt.title('Amount Chart')
-    plt.plot(x, y2, color='green')
-    plt.xticks(rotation=45)
+    x_label = [i.strftime('%Y-%m-%d') for i in x]
+    plt.xticks(x, x_label, rotation=45)
+    plt.plot(x, y2, 'o-', color='green')
 
     plt.show()
 
 
 if __name__ == '__main__':
-    name = '深渊派对挑战书'
+    name = '浓缩的异界精髓'
     action(name)
