@@ -30,7 +30,8 @@ def get_content():
     # 获取昨天的时间
     yesterday = str(datetime.date.today() - datetime.timedelta(days=1)).replace('-', '')
     sql = 'SELECT m.id, m.name, m.itemid FROM materials m JOIN statistics s on m.id = s.materials_id WHERE ' \
-          's.itemamt > 10000 AND s.local_time = %s' % yesterday
+          's.itemamt > 1000 AND s.local_time = %s' % yesterday
+    # sql = 'SELECT id, name, itemid FROM materials'
     result = bee.read(sql, [])
     email_content = '<table align="center" border="1" cellspacing="0" style="text-align:center;width: 1000px" ' \
                     'summary="交易量大于1w的材料"><caption>{0}分析表</caption><tr><th>序号</th><th>材料名称</th>' \
@@ -43,6 +44,15 @@ def get_content():
         result2 = bee.read(sql2, [i['id']])
         if len(result2) == 2:
             yesterday, before_yesterday = result2[0], result2[1]
+
+            # 昨天一天最低价到最高价的涨幅
+            if yesterday['minprice'] != 0:
+                one_day_price_rate = round((yesterday['maxprice'] - yesterday['minprice']) / yesterday['minprice'] * 100, 2)
+            else:
+                one_day_price_rate = 0
+            if one_day_price_rate > 10000 or one_day_price_rate == 0:
+                # 如果一天内最低到最高差距太大或者为0则不显示
+                continue
             # 昨天的交易量相比前天的涨幅
             if before_yesterday['itemamt'] != 0:
                 itemamt_rate = round((yesterday['itemamt'] - before_yesterday['itemamt']) / before_yesterday['itemamt'] * 100, 2)
@@ -53,11 +63,6 @@ def get_content():
                 price_rate = round((yesterday['price'] - before_yesterday['price']) / before_yesterday['price'] * 100, 2)
             else:
                 price_rate = 0
-            # 昨天一天最低价到最高价的涨幅
-            if yesterday['minprice'] != 0:
-                one_day_price_rate = round((yesterday['maxprice'] - yesterday['minprice']) / yesterday['minprice'] * 100, 2)
-            else:
-                one_day_price_rate = 0
             result_set.append([i['name'], yesterday['price'], itemamt_rate, price_rate, one_day_price_rate])
 
     index = 0

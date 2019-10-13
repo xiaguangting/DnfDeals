@@ -47,5 +47,5 @@ def action(name):
 
 
 if __name__ == '__main__':
-    name = '无色小晶块'
+    name = '锐眼药剂'
     action(name)
